@@ -1,8 +1,12 @@
 :root {
-  --color-primary: #FFD1DC; /* Pastel Pink */
-  --color-secondary: #FFFACD; /* Lemon Chiffon Yellow */
-  --color-bg: #FDFBF7; /* Off-white/Cream */
-  --color-text: #4A4A4A; /* Soft Charcoal */
+  --color-primary: #FFD1DC;
+  /* Pastel Pink */
+  --color-secondary: #FFFACD;
+  /* Lemon Chiffon Yellow */
+  --color-bg: #FDFBF7;
+  /* Off-white/Cream */
+  --color-text: #4A4A4A;
+  /* Soft Charcoal */
   --color-card-bg: #FFFFFF;
   --shadow-soft: 0 10px 30px -10px rgba(255, 209, 220, 0.5);
   --shadow-hover: 0 20px 40px -10px rgba(255, 209, 220, 0.7);
@@ -33,7 +37,9 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 700;
   line-height: 1.2;
 }
@@ -113,12 +119,20 @@ p {
   font-size: 0.9rem;
 }
 
+.dedication {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
 /* Animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -130,11 +144,11 @@ p {
   h1 {
     font-size: 3rem;
   }
-  
+
   .card {
     padding: 1.5rem;
   }
-  
+
   #app {
     padding: 1rem;
   }
