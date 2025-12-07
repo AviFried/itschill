@@ -1,15 +1,15 @@
 :root {
-  --color-primary: #FFB7C5;
-  /* Cherry Blossom Pink - True Light Pink */
-  --color-secondary: #FFFACD;
-  /* Lemon Chiffon Yellow */
-  --color-bg: #FDFBF7;
-  /* Off-white/Cream */
-  --color-text: #4A4A4A;
-  /* Soft Charcoal */
+  --color-primary: #FF85C0;
+  /* Vivid Bubble Gum Pink */
+  --color-secondary: #FFCBE6;
+  /* Soft Cotton Candy */
+  --color-bg: #FFF0F6;
+  /* Very Pale Pink */
+  --color-text: #594050;
+  /* Warm Dark Grey/Purple */
   --color-card-bg: #FFFFFF;
-  --shadow-soft: 0 10px 30px -10px rgba(255, 209, 220, 0.5);
-  --shadow-hover: 0 20px 40px -10px rgba(255, 209, 220, 0.7);
+  --shadow-soft: 0 10px 30px -10px rgba(255, 133, 192, 0.3);
+  --shadow-hover: 0 20px 40px -10px rgba(255, 133, 192, 0.5);
   --radius-lg: 24px;
   --radius-md: 16px;
   --font-main: 'Outfit',
@@ -47,7 +47,8 @@ h3 {
 
 h1 {
   font-size: 4rem;
-  background: linear-gradient(135deg, #FFB7C5, #FFC5D3);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
@@ -92,7 +93,7 @@ p {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 209, 220, 0.2);
+  border: 1px solid rgba(224, 195, 252, 0.2);
   position: relative;
   overflow: hidden;
 }
