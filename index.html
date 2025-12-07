@@ -9,18 +9,36 @@
   <meta name="description" content="It's chill. A mindset. A vibe. A reset button." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #FDFD96;
+      --color-secondary: #E0B0FF;
+      --color-bg: #FFD9EC;
+      --color-text: #594050;
+      --font-main: 'Nunito', sans-serif;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-main);
+      margin: 0;
+    }
+  </style>
 </head>
 
 <body>
   <div id="app">
+
+
     <header class="hero">
       <h1 class="title">It’s Chill</h1>
       <p class="subtitle">a mindset.</p>
     </header>
 
     <main class="content">
-      <section class="card">
+      <section class="card reveal">
         <h2>What does this mean?</h2>
         <p>
           “It’s chill” is a vibe and a mindset. It’s that moment where you remind yourself to stay grounded, calm, and
@@ -29,7 +47,7 @@
         </p>
       </section>
 
-      <section class="card">
+      <section class="card reveal">
         <h2>Is everything always really chill?</h2>
         <p>
           Let’s be real. No, life is not always chill. Life can be messy, emotional, and unbelievably stressful. But you
@@ -39,7 +57,7 @@
         </p>
       </section>
 
-      <section class="card">
+      <section class="card reveal">
         <h2>Does saying “it’s chill” mean I shouldn’t express my emotions?</h2>
         <p>
           Not at all. “It’s chill” is not a way to shut down your feelings — it’s a way to give yourself a second to
@@ -49,7 +67,7 @@
         </p>
       </section>
 
-      <section class="card">
+      <section class="card reveal">
         <h2>How does it work?</h2>
         <p>
           Start saying it’s chill more often! Especially in the stressful times in your life. That small moment
