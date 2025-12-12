@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = (await getCollection('posts')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout title="It's Chill - Blog">
+	<main id="app">
+        <header class="hero">
+			<a href="/" style="text-decoration: none;">
+                <img src="/logo.jpg" alt="It's Chill" class="title logo" />
+            </a>
+			<h1 class="subtitle">chill thoughts.</h1>
+		</header>
+
+		<div class="content">
+            <ul class="post-list">
+                {posts.map((post) => (
+                    <li class="card reveal">
+                        <a href={`/blog/${post.slug}`}>
+                            {post.data.image && <img src={post.data.image} alt={post.data.title} />}
+                            <div class="post-meta">
+                                <h2>{post.data.title}</h2>
+                                <time datetime={post.data.date.toISOString()}>
+                                    {post.data.date.toLocaleDateString()}
+                                </time>
+                            </div>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+		</div>
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="/" style="color: var(--color-text); text-decoration: none;">← Home</a>
+        </div>
+	</main>
+</Layout>
+
+<script>
+    // Re-using the same scroll reveal logic
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('active');
+				observer.unobserve(entry.target);
+			}
+		});
+	});
+
+	document.querySelectorAll('.reveal').forEach(el => {
+		observer.observe(el);
+	});
+</script>
+
+<style>
+    .post-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .post-list a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    .post-list img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: var(--radius-md);
+        margin-bottom: 1rem;
+    }
+    .post-meta h2 {
+        margin: 0.5rem 0;
+    }
+    .post-meta time {
+        color: #888;
+        font-size: 0.9rem;
+    }
+</style>
