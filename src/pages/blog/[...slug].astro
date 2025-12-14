@@ -18,7 +18,7 @@ const { Content } = await post.render();
   <main class="blog-post-content content">
     <article class="card">
       {post.data.image && <img src={post.data.image} alt={post.data.title || "Blog Post"} class="featured-image" />}
-      {post.data.title && <h1>{post.data.title}</h1>}
+      {false && <h1>{post.data.title}</h1>}
       <p class="date">{post.data.date.toLocaleDateString()}</p>
       {post.data.video && (
         <div class="video-container">
