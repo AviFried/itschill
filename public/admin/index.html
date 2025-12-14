@@ -9,8 +9,42 @@
 </head>
 
 <body>
+    <!-- Include React and ReactDOM -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <!-- Include the script that builds the page and powers Netlify CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <script>
+        CMS.registerPreviewStyle("/admin/preview.css");
+
+        const h = React.createElement;
+
+        const PostPreview = (props) => {
+            const entry = props.entry;
+            const image = entry.getIn(['data', 'image']);
+            const video = entry.getIn(['data', 'video']);
+            const bg = image && props.getAsset(image);
+
+            return h('div', { className: 'blog-post-content' },
+                h('article', { className: 'card' },
+                    image && h('img', { src: bg ? bg.toString() : "", className: 'featured-image' }),
+                    h('h1', {}, entry.getIn(['data', 'title'])),
+                    h('p', { className: 'date' },
+                        entry.getIn(['data', 'date']) ? new Date(entry.getIn(['data', 'date'])).toLocaleDateString() : ''
+                    ),
+                    video && h('div', { className: 'video-container' },
+                        h('iframe', { src: video, frameBorder: "0", allowFullScreen: true })
+                    ),
+                    h('div', { className: 'prose' },
+                        props.widgetFor('body')
+                    )
+                )
+            );
+        }
+
+        CMS.registerPreviewTemplate("posts", PostPreview);
+    </script>
 </body>
 
 </html>
