@@ -179,6 +179,26 @@ p {
     }
 }
 
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+}
+
+.icon:hover {
+    color: var(--color-secondary);
+    transform: scale(1.1);
+}
+
 .bounce {
     animation: bounce 1s;
 }
