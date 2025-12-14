@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = (await getCollection('posts')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout title="It's Chill - Media">
+	<main id="app">
+        <header class="hero">
+			<a href="/" style="text-decoration: none;">
+                <img src="/logo.jpg" alt="It's Chill" class="title logo" />
+            </a>
+			<h1 class="subtitle">chill media.</h1>
+		</header>
+
+		<div class="content">
+            <div class="media-grid">
+                {posts.map((post) => (
+                    <a href={`/media/${post.slug}`} class="media-item reveal">
+                        {post.data.image && <img src={post.data.image} alt="Chill Media" loading="lazy" />}
+                        {post.data.video && <div class="video-indicator">▶</div>}
+                    </a>
+                ))}
+            </div>
+		</div>
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="/" style="color: var(--color-text); text-decoration: none;">← Home</a>
+        </div>
+	</main>
+</Layout>
+
+<script>
+    // Scroll reveal logic
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('active');
+				observer.unobserve(entry.target);
+			}
+		});
+	});
+
+	document.querySelectorAll('.reveal').forEach(el => {
+		observer.observe(el);
+	});
+</script>
+
+<style>
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+    .media-item {
+        display: block;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+    .media-item:hover {
+        transform: translateY(-5px);
+    }
+    .media-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        aspect-ratio: 1 / 1; /* Square by default, or remove for masonry */
+    }
+    .video-indicator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        color: white;
+        background: rgba(0,0,0,0.5);
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+</style>

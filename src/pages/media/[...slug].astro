@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={`It's Chill - Media`}>
+	<main class="post-container">
+        <div class="back-nav">
+            <a href="/media" class="back-button">
+                <span>←</span> Back to Gallery
+            </a>
+        </div>
+		
+        <article class="post">
+            <div class="media-full">
+                {post.data.image && <img src={post.data.image} alt="Chill Media" />}
+                {post.data.video && (
+                    <div class="video-wrapper">
+                         <iframe src={post.data.video} frameborder="0" allowfullscreen></iframe>
+                    </div>
+                )}
+            </div>
+            
+            <div class="post-header">
+                {false && <h1>{post.data.title}</h1>}
+                <time datetime={post.data.date.toISOString()}>
+                    {post.data.date.toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })}
+                </time>
+			</div>
+		</article>
+	</main>
+</Layout>
+
+<style>
+	.post-container {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+	}
+
+    .back-nav {
+        margin-bottom: 2rem;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-text);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        background: rgba(255,255,255,0.5);
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .back-button:hover {
+        background: white;
+        transform: translateX(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .post {
+        background: white;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .media-full {
+        width: 100%;
+        background: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .media-full img {
+        width: 100%;
+        height: auto;
+        max-height: 80vh;
+        object-fit: contain;
+        display: block;
+    }
+
+    .video-wrapper {
+        width: 100%;
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+    }
+
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+	.post-header {
+		padding: 1.5rem;
+		text-align: right;
+        border-top: 1px solid #f0f0f0;
+        background: white;
+	}
+
+	time {
+		color: #888;
+        font-family: var(--font-mono, monospace);
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+	}
+    
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        .post-container {
+            padding: 1rem;
+        }
+        .media-full img {
+            max-height: 60vh;
+        }
+    }
+</style>
