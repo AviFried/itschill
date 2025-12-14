@@ -1,7 +1,7 @@
 ---
 title: "Welcome to the Chill Blog"
 date: 2023-10-27T10:00:00Z
-image: "/logo.jpg"
+image: "/logo.png"
 ---
 
 Welcome to the new blog! usage is simple.
