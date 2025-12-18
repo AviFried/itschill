@@ -86,18 +86,30 @@ const posts = [...postEntries, ...uploadFiles].sort(
 </Layout>
 
 <script>
-    // Scroll reveal logic
-	const observer = new IntersectionObserver((entries) => {
-		entries.forEach(entry => {
-			if (entry.isIntersecting) {
-				entry.target.classList.add('active');
-				observer.unobserve(entry.target);
-			}
+    // Scroll reveal logic - re-initialize on view transitions
+	function initReveal() {
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('active');
+					observer.unobserve(entry.target);
+				}
+			});
 		});
-	});
 
-	document.querySelectorAll('.reveal').forEach(el => {
-		observer.observe(el);
+		document.querySelectorAll('.reveal').forEach(el => {
+			// Reset and observe
+			el.classList.remove('active');
+			observer.observe(el);
+		});
+	}
+
+	// Initialize on page load
+	initReveal();
+
+	// Re-initialize after view transitions
+	document.addEventListener('astro:page-load', () => {
+		initReveal();
 	});
 </script>
 
