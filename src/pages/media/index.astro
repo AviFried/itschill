@@ -46,16 +46,35 @@ const posts = [...postEntries, ...uploadFiles].sort(
 		</header>
 
 		<div class="content">
-            <div class="media-grid">
+            <div class="media-masonry">
                 {posts.map((post) => (
                     <a href={`/media/${post.slug}`} class="media-item reveal">
-                        {post.data.image && <img src={post.data.image} alt="Chill Media" loading="lazy" />}
-                        {post.data.video && (
-                            <div class="video-container">
-                                {!post.data.image && <div class="video-placeholder"></div>}
-                                <div class="video-indicator">▶</div>
-                            </div>
-                        )}
+                        <div class="media-wrapper">
+                            {post.data.image && (
+                                <img 
+                                    src={post.data.image} 
+                                    alt="Chill Media" 
+                                    loading="lazy" 
+                                    transition:name={`media-${post.slug}`}
+                                />
+                            )}
+                            {post.data.video && (
+                                <div class="video-preview">
+                                    <video 
+                                        autoplay 
+                                        muted 
+                                        loop 
+                                        playsinline 
+                                        transition:name={`media-${post.slug}`}
+                                    >
+                                        <source src={post.data.video} type={`video/${post.data.video.split('.').pop()}`} />
+                                    </video>
+                                    <div class="video-overlay">
+                                        <div class="video-indicator">▶</div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </a>
                 ))}
             </div>
@@ -83,14 +102,15 @@ const posts = [...postEntries, ...uploadFiles].sort(
 </script>
 
 <style>
-    .media-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
+    .media-masonry {
+        columns: 3 250px;
+        column-gap: 1.5rem;
         padding: 1rem 0;
     }
     .media-item {
         display: block;
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
         border-radius: var(--radius-md);
         overflow: hidden;
         position: relative;
@@ -98,46 +118,66 @@ const posts = [...postEntries, ...uploadFiles].sort(
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         cursor: pointer;
         background: #f0f0f0;
-        aspect-ratio: 1 / 1;
+    }
+    .media-wrapper {
+        width: 100%;
+        height: auto;
     }
     .media-item:hover {
         transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
-    .media-item img {
+    .media-item img, .media-item video {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
         display: block;
     }
-    .video-container {
+    .video-preview {
+        position: relative;
+        width: 100%;
+    }
+    .video-overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        background: rgba(0,0,0,0.1);
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: background 0.3s ease;
     }
-    .video-placeholder {
-        width: 100%;
-        height: 100%;
-        background: #222;
+    .media-item:hover .video-overlay {
+        background: rgba(0,0,0,0.2);
     }
     .video-indicator {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 2rem;
+        font-size: 1.5rem;
         color: white;
-        background: rgba(0,0,0,0.5);
-        width: 50px;
-        height: 50px;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(4px);
+        width: 44px;
+        height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.2);
         z-index: 2;
+        transition: transform 0.3s ease;
+    }
+    .media-item:hover .video-indicator {
+        transform: scale(1.1);
+    }
+    
+    @media (max-width: 800px) {
+        .media-masonry {
+            columns: 2 200px;
+        }
+    }
+    @media (max-width: 500px) {
+        .media-masonry {
+            columns: 1;
+        }
     }
 </style>
