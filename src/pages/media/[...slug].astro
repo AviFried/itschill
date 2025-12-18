@@ -1,17 +1,46 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  return posts.map(post => ({
+  
+  // Also get automatically detected files from public/uploads
+  const uploadsDir = './public/uploads';
+  let uploadFiles = [];
+  
+  if (fs.existsSync(uploadsDir)) {
+      uploadFiles = fs.readdirSync(uploadsDir)
+          .filter(file => /\.(jpg|jpeg|png|webp|mp4|mov|webm)$/i.test(file))
+          .map(file => {
+              const stats = fs.statSync(path.join(uploadsDir, file));
+              const isVideo = /\.(mp4|mov|webm)$/i.test(file);
+              return {
+                  slug: `upload-${file}`,
+                  data: {
+                      title: file,
+                      date: stats.mtime,
+                      image: isVideo ? null : `/uploads/${file}`,
+                      video: isVideo ? `/uploads/${file}` : null,
+                  },
+                  isUpload: true
+              };
+          });
+  }
+
+  const allPosts = [...posts, ...uploadFiles];
+
+  return allPosts.map(post => ({
     params: { slug: post.slug },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const isVideo = post.data.video;
+const isExternalVideo = isVideo && (isVideo.includes('youtube.com') || isVideo.includes('vimeo.com') || isVideo.includes('youtu.be'));
 ---
 
 <Layout title={`It's Chill - Media`}>
@@ -25,15 +54,24 @@ const { Content } = await post.render();
         <article class="post">
             <div class="media-full">
                 {post.data.image && <img src={post.data.image} alt="Chill Media" />}
-                {post.data.video && (
-                    <div class="video-wrapper">
-                         <iframe src={post.data.video} frameborder="0" allowfullscreen></iframe>
-                    </div>
+                {isVideo && (
+                    isExternalVideo ? (
+                        <div class="video-wrapper">
+                             <iframe src={post.data.video} frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    ) : (
+                        <div class="video-wrapper">
+                            <video controls autoplay muted loop playsinline>
+                                <source src={post.data.video} type={`video/${post.data.video.split('.').pop()}`} />
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    )
                 )}
             </div>
             
             <div class="post-header">
-                {false && <h1>{post.data.title}</h1>}
+                {post.isUpload && <p class="file-name">{post.data.title}</p>}
                 <time datetime={post.data.date.toISOString()}>
                     {post.data.date.toLocaleDateString(undefined, {
                         year: 'numeric',
@@ -97,7 +135,7 @@ const { Content } = await post.render();
         align-items: center;
     }
 
-    .media-full img {
+    .media-full img, .media-full video {
         width: 100%;
         height: auto;
         max-height: 80vh;
@@ -108,6 +146,10 @@ const { Content } = await post.render();
     .video-wrapper {
         width: 100%;
         position: relative;
+    }
+
+    /* Only apply aspect ratio to iframe videos */
+    .video-wrapper:has(iframe) {
         padding-bottom: 56.25%; /* 16:9 */
         height: 0;
     }
@@ -125,7 +167,17 @@ const { Content } = await post.render();
 		text-align: right;
         border-top: 1px solid #f0f0f0;
         background: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 	}
+
+    .file-name {
+        margin: 0;
+        font-size: 0.8rem;
+        color: #999;
+        font-family: var(--font-mono, monospace);
+    }
 
 	time {
 		color: #888;
@@ -139,7 +191,7 @@ const { Content } = await post.render();
         .post-container {
             padding: 1rem;
         }
-        .media-full img {
+        .media-full img, .media-full video {
             max-height: 60vh;
         }
     }
