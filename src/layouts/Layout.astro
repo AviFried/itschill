@@ -6,15 +6,28 @@ interface Props {
 const { title } = Astro.props;
 import { ClientRouter } from 'astro:transitions';
 import "../styles/global.css";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const description = "It's chill. A mindset. A vibe. A reset button.";
+const ogImageURL = new URL('/logo.png', Astro.site);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="It's chill. A mindset. A vibe. A reset button." />
+		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" href="/logo.png" />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Open Graph / Facebook / WhatsApp / Instagram -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageURL} />
+
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
