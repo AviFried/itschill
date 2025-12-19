@@ -133,6 +133,16 @@ import Layout from '../layouts/Layout.astro';
         chillBtn.addEventListener('click', () => {
             chillOverlay.classList.add('active');
             
+            // Track the event in Google Analytics
+            // @ts-ignore
+            if (typeof gtag === 'function') {
+                // @ts-ignore
+                gtag('event', 'chill_button_press', {
+                    'event_category': 'interaction',
+                    'event_label': 'Chill Time Button'
+                });
+            }
+
             // Randomize text for a fun vibe
             const messages = ["Chill...", "It's all good.", "Breathe.", "Stay Grounded.", "You got this."];
             const textEl = chillOverlay.querySelector('.chill-text');
