@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import fs from 'node:fs';
+import path from 'node:path';
 import { formatMediaSlug } from '../../utils/slugify';
 
 // Get curated posts from content collection
@@ -43,7 +44,11 @@ const posts = [...postEntries, ...uploadFiles].sort(
 			<a href="/" style="text-decoration: none;">
                 <img src="/logo.png" alt="It's Chill" class="title logo" />
             </a>
-			<h1 class="subtitle">chill media.</h1>
+			<p class="subtitle">chill media.</p>
+            <nav style="margin-top: 1rem; display: flex; justify-content: center; gap: 2rem;">
+                <a href="/" style="color: var(--color-secondary); text-decoration: none; font-weight: bold; border-bottom: 2px solid var(--color-primary);">Home</a>
+                <a href="https://shop.itschill.org" style="color: var(--color-secondary); text-decoration: none; font-weight: bold; border-bottom: 2px solid var(--color-primary);">Shop</a>
+            </nav>
 		</header>
 
 		<div class="content">
@@ -80,9 +85,15 @@ const posts = [...postEntries, ...uploadFiles].sort(
                 ))}
             </div>
 		</div>
-        <div style="text-align: center; margin-top: 4rem;">
-            <a href="/" style="color: var(--color-text); text-decoration: none;">← Home</a>
-        </div>
+        <footer class="footer">
+			<p>Stay Chill.</p>
+            <nav style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; opacity: 0.8;">
+                <a href="/" style="color: var(--color-text); text-decoration: none; font-size: 0.9rem;">Home</a>
+                <a href="/media" style="color: var(--color-text); text-decoration: none; font-size: 0.9rem;">Previous Posts</a>
+                <a href="https://shop.itschill.org" style="color: var(--color-text); text-decoration: none; font-size: 0.9rem;">Shop</a>
+            </nav>
+			<p class="dedication">L'ilui Nishmas Etta Ahuva bas Yaakov<br />and Toba bas Yehoshua Yaakov</p>
+		</footer>
 	</main>
 </Layout>
 
