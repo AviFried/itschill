@@ -4,6 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { formatMediaSlug } from '../../utils/slugify';
+
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   
@@ -12,22 +14,23 @@ export async function getStaticPaths() {
   let uploadFiles = [];
   
   if (fs.existsSync(uploadsDir)) {
-      uploadFiles = fs.readdirSync(uploadsDir)
-          .filter(file => /\.(jpg|jpeg|png|webp|mp4|mov|webm)$/i.test(file))
-          .map(file => {
-              const stats = fs.statSync(path.join(uploadsDir, file));
-              const isVideo = /\.(mp4|mov|webm)$/i.test(file);
-              return {
-                  slug: `upload-${file}`,
-                  data: {
-                      title: file,
-                      date: stats.mtime,
-                      image: isVideo ? null : `/uploads/${file}`,
-                      video: isVideo ? `/uploads/${file}` : null,
-                  },
-                  isUpload: true
-              };
-          });
+      const files = fs.readdirSync(uploadsDir)
+          .filter(file => /\.(jpg|jpeg|png|webp|mp4|mov|webm)$/i.test(file));
+      
+      uploadFiles = files.map(file => {
+          const stats = fs.statSync(path.join(uploadsDir, file));
+          const isVideo = /\.(mp4|mov|webm)$/i.test(file);
+          return {
+              slug: formatMediaSlug(file, stats.mtime),
+              data: {
+                  title: file.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+                  date: stats.mtime,
+                  image: isVideo ? null : `/uploads/${file}`,
+                  video: isVideo ? `/uploads/${file}` : null,
+              },
+              isUpload: true
+          };
+      });
   }
 
   const allPosts = [...posts, ...uploadFiles];
