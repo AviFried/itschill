@@ -64,6 +64,12 @@ import Layout from '../layouts/Layout.astro';
 			</section>
 		</div>
 
+        <div class="chill-button-container">
+            <div class="chill-btn-housing">
+                <button id="chill-trigger" class="chill-btn">Chill<br/>time</button>
+            </div>
+        </div>
+
 		<footer class="footer">
 			<p>Stay Chill.</p>
             <nav class="footer-nav">
@@ -74,6 +80,12 @@ import Layout from '../layouts/Layout.astro';
 			<p class="dedication">L'ilui Nishmas Etta Ahuva bas Yaakov<br />and Toba bas Yehoshua Yaakov</p>
 		</footer>
 	</main>
+
+    <div id="chill-overlay" class="chill-overlay">
+        <div class="floating-blob" style="width: 400px; height: 400px; background: var(--color-primary); top: -100px; left: -100px;"></div>
+        <div class="floating-blob" style="width: 300px; height: 300px; background: var(--color-secondary); bottom: -50px; right: -50px; animation-delay: -5s;"></div>
+        <div class="chill-text">Chill...</div>
+    </div>
 </Layout>
 
 <script>
@@ -107,6 +119,38 @@ import Layout from '../layouts/Layout.astro';
 		title.style.cursor = 'pointer';
 		title.title = "Click me for a vibe check";
 	}
+
+    // Chill Mode Logic
+    const chillBtn = document.getElementById('chill-trigger');
+    const chillOverlay = document.getElementById('chill-overlay');
+    const chillText = drilldown(chillOverlay, '.chill-text');
+
+    function drilldown(parent: HTMLElement | null, selector: string) {
+        return parent?.querySelector(selector) as HTMLElement | null;
+    }
+
+    if (chillBtn && chillOverlay) {
+        chillBtn.addEventListener('click', () => {
+            chillOverlay.classList.add('active');
+            
+            // Randomize text for a fun vibe
+            const messages = ["Chill...", "It's all good.", "Breathe.", "Stay Grounded.", "You got this."];
+            const textEl = chillOverlay.querySelector('.chill-text');
+            if (textEl) {
+                textEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+            }
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                chillOverlay.classList.remove('active');
+            }, 5000);
+        });
+
+        // Click overlay to hide early
+        chillOverlay.addEventListener('click', () => {
+            chillOverlay.classList.remove('active');
+        });
+    }
 
 	console.log("It's Chill. Logic loaded.");
 </script>
