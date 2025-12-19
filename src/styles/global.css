@@ -23,9 +23,7 @@
 
 body {
     font-family: var(--font-main);
-    background: linear-gradient(-45deg, #FFD9EC, #FFE6F2, #FCEBF3, #FFD9EC);
-    background-size: 400% 400%;
-    animation: gradientBG 30s ease infinite;
+    background: var(--color-bg);
     color: var(--color-text);
     line-height: 1.8;
     -webkit-font-smoothing: antialiased;
@@ -34,19 +32,7 @@ body {
     min-height: 100vh;
 }
 
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
 
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
 
 #app {
     max-width: 900px;
